@@ -112,6 +112,8 @@ function countUp(el, to, dur = 1200) {
 - **Mermaid / Excalidraw**: author the diagram structure fast, render to SVG, then animate the SVG.
 - **Remotion (React)**: data-driven, deterministic renders for video output and repeatable exports.
 
+A diagram too big for one frame (a long causal chain, a timeline of documents) can be placed on one board and travelled with a virtual camera that pans link to link and pushes in on the active node. See **canvas-camera-animation**. To turn an abstract relation into a prop rather than a box-and-arrow, see **visual-metaphor**.
+
 ## Output checklist
 
 - Reveal order is nodes → edges → labels; nothing dumps in all at once.

@@ -14,6 +14,8 @@ Turn one message into a paced, narrated 30–90s short. Run the full pipeline: s
 - Go from a raw idea or feature to a script, storyboard, and assembled piece.
 - Sync narration to visuals and add captions for muted playback.
 
+Longer than ~5 minutes or split into chapters? Use **longform-explainer** for the architecture and this skill's pipeline inside each chapter. Matching an existing film's style? Start with **reference-video-analysis**.
+
 ## Story structure (decide this first)
 
 An explainer is an argument, not a feature tour. Before any pipeline step, lock the narrative so every later choice serves it.
@@ -41,6 +43,7 @@ Abstract mechanisms land when mapped to something the viewer already knows. Choo
 - Pick a metaphor from the viewer's world (a queue, a thermostat, an assembly line), not the engineering domain.
 - One metaphor per video; reuse it for both the visual grammar and the VO wording.
 - Test it: if the analogy needs its own explanation, it's the wrong one.
+- Inside the analogy, animate relations (who passes what to whom), not nouns. **visual-metaphor** has the metaphor card, prop catalog and recipes.
 
 ### Pacing per beat
 
@@ -128,6 +131,8 @@ In Remotion, drive captions from the same timing array used for scene cuts so th
 ## Style-system consistency
 
 Lock one type scale, one color grammar (color = meaning, never reassigned), and one easing curve before building scene 2. Reuse the same enter/exit transitions across scenes so the piece feels like one object, not a montage of experiments. Visuals must illustrate the VO line currently spoken — show, don't decorate.
+
+For continuity across scenes, lay them out as stations on one board and let camera moves be the transitions. **canvas-camera-animation** covers camera grammar and tactile material systems (paper, blueprint, chalk).
 
 ## Output checklist
 

@@ -1,6 +1,6 @@
 # Explainer Video Skills
 
-> Explainer video skills for AI coding agents: script, storyboard, and render narrated explainers, year-in-review recaps, and animated diagrams.
+> Explainer video skills for AI coding agents: script, storyboard, and render narrated explainers and long-form video essays, year-in-review recaps, animated diagrams and visual metaphors, plus a method for analyzing reference films.
 
 ![Explainer Video Skills — animated showcase](./showcase.gif)
 
@@ -29,6 +29,10 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 | [diagram-animation](./skills/diagram-animation) | Reveal diagrams and charts over time — progressive node/edge reveals, flowing connectors, growing bars, count-ups. |
 | [whiteboard-animation](./skills/whiteboard-animation) | Draw-on "VideoScribe"-style explainers — a hand sketches illustrations and handwriting onto a board, stroke by stroke, paced to narration. |
 | [isometric-animation](./skills/isometric-animation) | Isometric / 2.5D scenes — stacked layers, extruded blocks, exploded diagrams, and isometric grids with staggered reveals and camera drift. |
+| [longform-explainer](./skills/longform-explainer) | 10–40 min video essays — tension-pair cold open, chapter bridges, steelman, refrain, callbacks, evidence tiers, and pacing by chapter function. |
+| [visual-metaphor](./skills/visual-metaphor) | Turn abstract ideas into props that animate a relation — metaphor cards, idiom-to-prop, motif escalation, honest "illustrative" labels. |
+| [canvas-camera-animation](./skills/canvas-camera-animation) | One continuous 2D board, travelled by a virtual camera — push/pull/pan/whip as meaning, parallax, fake DOF, motion blur, paper-collage materials. |
+| [reference-video-analysis](./skills/reference-video-analysis) | Learn from an existing film without copying it — measure cuts, speech rate and loudness, look where the numbers point, write technique cards. |
 
 ## When it activates
 
@@ -36,6 +40,9 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 - You ask for a year-in-review / wrapped recap, or per-user stat videos from a data table.
 - You ask to animate a diagram, flowchart, architecture, or chart step by step.
 - You ask to sync narration and captions, or batch-render personalized videos.
+- You ask to plan a long video essay, a cold open, or chapters that keep viewers watching.
+- You ask for a visual metaphor, or to move a camera through a 2D / paper-collage scene.
+- You share a reference video and ask how it's made or how to match its pacing.
 
 ## Example prompts
 
@@ -44,6 +51,10 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 - "Build a Spotify Wrapped style year-in-review video from this CSV of users."
 - "Animate this architecture diagram so it reveals node by node."
 - "Grow these bars and count up the numbers in a chart that draws on."
+- "Outline a 25-minute chaptered explainer on this topic, with a cold open and a steelman chapter."
+- "Find a visual metaphor for 'risk is passed to someone else' and animate it."
+- "Lay these five ideas on one paper board and fly a camera through them, whip-pan between cases."
+- "Analyze this YouTube explainer: cut rhythm, speech rate, how chapters hand off, what to borrow."
 
 ## Skills
 
@@ -52,10 +63,14 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 - diagram-animation
 - whiteboard-animation
 - isometric-animation
+- longform-explainer
+- visual-metaphor
+- canvas-camera-animation
+- reference-video-analysis
 
 ## Topics
 
-`explainer-video` `whiteboard-animation` `isometric-animation` `wrapped-video` `diagram-animation` `year-in-review` `motion-graphics` `claude-skill`
+`explainer-video` `whiteboard-animation` `isometric-animation` `wrapped-video` `diagram-animation` `year-in-review` `video-essay` `visual-metaphor` `camera-animation` `video-analysis` `motion-graphics` `claude-skill`
 
 ## More packs
 
