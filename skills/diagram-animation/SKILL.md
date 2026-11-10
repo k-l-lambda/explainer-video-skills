@@ -126,7 +126,7 @@ A diagram too big for one frame (a long causal chain, a timeline of documents) c
 
 > **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
 
-For a self-contained diagram (reveal, flowing connector, animated chart) the deliverable is **one HTML file that opens directly in a browser** — no build step, no render pipeline. A single file is the right tier for web motion. (If the diagram is part of a rendered video, build it as a Remotion composition instead and verify via `remotion still` — see remotion-video.)
+For a self-contained diagram (reveal, flowing connector, animated chart) the deliverable is **one HTML file that opens directly in a browser** — no build step, no render pipeline. A single file is the right tier for web motion. (If the diagram is part of a rendered video, port it into a Remotion composition — next section — and verify via `remotion still`; see **explainer-video** for the render loop.)
 
 **Output contract:**
 - One `.html` file: SVG inline; Framer Motion / D3 / anime / GSAP from CDN; the animation in one inline `<script>` (one driver).
@@ -159,6 +159,39 @@ For a self-contained diagram (reveal, flowing connector, animated chart) the del
 3. Screenshotted at start / mid / end — reveal order correct, connectors land on the right nodes, numbers exact.
 4. `prefers-reduced-motion` shows the final composed diagram without looping motion.
 5. Color grammar consistent; active element highlighted, context dimmed; nothing dumps in all at once.
+
+## Port the master timeline into Remotion (`useGsapTimeline`)
+
+A GSAP master timeline moves into a Remotion composition almost unchanged with `useGsapTimeline()` from `@remotion/gsap` (Remotion ≥ 4.0.517). The hook builds the timeline paused and seeks it to the current frame, so it replaces the `?t=N` harness: every `remotion still` lands on an exact frame.
+
+```tsx
+import {AbsoluteFill} from "remotion";
+import {useGsapTimeline} from "@remotion/gsap";
+
+export const Flow: React.FC = () => {
+  const scope = useGsapTimeline<HTMLDivElement>(({timeline, selector}) => {
+    timeline.set(selector(".edge"), {strokeDasharray: 1, strokeDashoffset: 1});
+    timeline
+      .to(selector(".node"), {opacity: 1, scale: 1, transformOrigin: "center", duration: .45, stagger: .35,
+                              ease: "back.out(1.6)", startAt: {scale: .8}})
+      .to(selector(".edge"), {strokeDashoffset: 0, duration: .5, stagger: .35}, "-=0.9");
+  });
+  return <AbsoluteFill ref={scope}>{/* the same inline SVG as the HTML version */}</AbsoluteFill>;
+};
+```
+
+Porting rules (the hook enforces them and throws during the build):
+
+- Put every tween on the hook's `timeline`, and select through `selector()` (scoped to the ref), not `document`-wide strings. `gsap.set()` calls become `timeline.set()`.
+- **No callbacks**: `onUpdate`, `onComplete`, `timeline.call()` and the like are rejected. Anything a callback used to do must become a tween of an element or of a CSS custom property on it.
+- **Element targets only**: tweening a plain object (`{x: 0}`) is rejected, because a still would never re-read it.
+- **No playback or seeking**: `play()`, `seek()`, `progress()`… are rejected; Remotion owns the clock.
+- **Synchronous builder, no unseeded randomness.** Load data before rendering (`calculateMetadata()`).
+- Plugins work: register them once at module scope (`gsap.registerPlugin(MotionPathPlugin, DrawSVGPlugin)`), outside the builder.
+
+Tested on Remotion 4.0.542 with gsap 3.13.0: this reveal, a `DrawSVGPlugin` stroke with a `MotionPathPlugin` follower, and a camera made of CSS-variable tweens rendered byte-identical stills when the same frames were rendered twice in different orders; an `onUpdate` callback and a plain-object tween each failed with the hook's error.
+
+**In Remotion Studio**, a GSAP scene can be moved, trimmed and renamed as a whole on the timeline, but its tweens are not keyframes there: Studio reads only the elements' static attributes (here the nodes' `opacity="0"`), and editing one in Studio changes the state GSAP starts from, not the animation. Values that must be tuned in Studio belong in `interpolate()` instead; see **explainer-video** `references/studio-editable.md`.
 
 ## Reference files
 

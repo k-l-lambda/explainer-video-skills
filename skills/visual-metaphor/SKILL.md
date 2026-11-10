@@ -142,7 +142,7 @@ Full runnable versions (with the `?t=N` seek harness): `references/metaphor-cata
 
 > **Packaged helper** (`scripts/`): `scripts/seek-shot.sh metaphor.html 0 0.9 1.4 3` freezes the `?t=N` harness; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them. See `scripts/README.md`.
 
-A single prop beat ships as **one HTML file** (inline SVG, GSAP from CDN, one master `tl`, the standard `?t=N` seek harness from **diagram-animation**). Inside a rendered film, port it to a Remotion composition and verify with `remotion still`.
+A single prop beat ships as **one HTML file** (inline SVG, GSAP from CDN, one master `tl`, the standard `?t=N` seek harness from **diagram-animation**). Inside a rendered film, port it to a Remotion composition and verify with `remotion still`. The master `tl` ports as is with `useGsapTimeline()` from `@remotion/gsap`, including `MotionPathPlugin` hand-offs (rules in **diagram-animation**, "Port the master timeline into Remotion"). A recipe that tweens a plain object or uses `onUpdate` must first be rewritten to tween the element itself, or a CSS custom property on it.
 
 **Before you finish:**
 1. Frozen frames at *before*, *during* and *after* the motion verb each read on their own (e.g. needle free → clamped → straining).

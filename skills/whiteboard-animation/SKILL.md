@@ -146,7 +146,7 @@ For a self-contained whiteboard scene (draw-on illustration, handwriting, a shor
 4. Hand lifts between strokes; no sliding across blank board.
 5. `prefers-reduced-motion` shows the completed board (all strokes drawn, hand hidden) without the drawing animation.
 
-For a narrated, frame-deterministic export, port the same draw-on (drive `strokeDashoffset` and the hand transform from `useCurrentFrame()/fps`) into a Remotion composition and render to MP4/GIF — see the explainer-video skill for the render-stills → encode loop.
+For a narrated, frame-deterministic export, port the draw-on into a Remotion composition and render to MP4/GIF — see the explainer-video skill for the render-stills → encode loop. A GSAP master timeline (`DrawSVGPlugin` + `MotionPathPlugin`) ports as is with `useGsapTimeline()` from `@remotion/gsap` (rules in **diagram-animation**, "Port the master timeline into Remotion"); an rAF-driven board is rewritten to drive `strokeDashoffset` and the hand transform from `useCurrentFrame()/fps` (`references/draw-on-recipes.md` §8).
 
 ## Reference files
 

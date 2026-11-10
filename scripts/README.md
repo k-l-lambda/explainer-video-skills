@@ -13,6 +13,9 @@ encoded file's real spec. Small, dependency-light, tier-matched.
 | `shot-stats.py` | any video | Cuts, ASL, bursts (whip/flash false positives), longest takes, per chapter. |
 | `sub-pacing.py` | `.vtt` / `.srt` | Speech rate (CJK chars/s, words/min), coverage, pauses, question lines, chapter open/close lines. |
 | `audio-stats.sh` | any video/audio | Integrated LUFS, LRA, true peak, silences. |
+| `transcribe-captions.py` | recorded narration | Word-timed Remotion `Caption[]` JSON from a WAV (faster-whisper). |
+| `sync-scene.mjs` | **Heavy** (Remotion) | Sets a named scene's `durationInFrames` to its audio and inlines its captions, as literals Studio can edit. |
+| `studio-check.mjs` | **Heavy** (Remotion) | Lists which props Remotion Studio reads as static, keyframed or computed (greyed out); `--strict` fails on computed. |
 
 ## Usage by tier
 
@@ -49,9 +52,19 @@ scripts/video-sheet.sh film.mp4 burst.jpg 33.8 0.4               # look where th
 ```
 Chapters come from yt-dlp's `.info.json` or a TSV of `mm:ss<TAB>title` lines.
 
+**Heavy — Remotion, after the narration is recorded** (see `explainer-video/references/studio-editable.md`):
+```bash
+python scripts/transcribe-captions.py public/vo/s2.wav public/vo/s2.captions.json --language zh
+node scripts/sync-scene.mjs src/Film.tsx "S2" public/vo/s2.wav --captions public/vo/s2.captions.json --fps 30
+node scripts/studio-check.mjs src/Film.tsx --strict durationInFrames,style.opacity
+npx remotion studio                                  # tune by hand; edits are written back to the code
+```
+
 ## Requirements
 - `seek-shot.sh` → `npx` + Playwright Chromium (`npx playwright install chromium` once).
 - `contact-sheet.sh` / `probe-mp4.sh` / `video-sheet.sh` / `audio-stats.sh` → `ffmpeg` / `ffprobe` (`video-sheet.sh` stamps timecodes if ffmpeg has `drawtext`).
 - `shot-stats.py` / `sub-pacing.py` → Python 3.8+, standard library only (`shot-stats.py` also calls `ffmpeg`).
+- `transcribe-captions.py` → Python 3.8+ with `faster-whisper` (downloads the model on first use; a GPU is optional).
+- `sync-scene.mjs` / `studio-check.mjs` → Node 18+, run from the Remotion project's root; they load `@remotion/codemods` from that project (a draft API: keep it on the same version as `remotion`). `sync-scene.mjs` also calls `ffprobe`.
 
 Shell scripts are POSIX `bash`; run everything from the project where your deliverable lives.

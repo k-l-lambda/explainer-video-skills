@@ -116,7 +116,11 @@ Alternatives with the same mechanics: blueprint (cyan lines, grid, stencil type)
 
 > **Packaged helper** (`scripts/`): `scripts/seek-shot.sh canvas.html 0 0.6 1.2 2.4` freezes the `?t=N` harness; `scripts/contact-sheet.sh` tiles them. For a rendered video, `scripts/video-sheet.sh out.mp4 sheet.jpg 0 0.5` shows every half-second. See `scripts/README.md`.
 
-Standalone scene: **one HTML file**, one master GSAP timeline that animates the camera object and calls `applyCamera` `onUpdate`, plus the `?t=N` seek harness (as in **diagram-animation**). Film: a Remotion composition that computes the camera from `useCurrentFrame()`.
+Standalone scene: **one HTML file** with one clock: the camera as a pure function `camAt(t)` (or a GSAP timeline that animates a camera object and calls `applyCamera` `onUpdate`), plus the `?t=N` seek harness (as in **diagram-animation**). Film: a Remotion composition that computes the camera from `useCurrentFrame()`. Three ways to port it, in `references/camera-recipes.md` §3:
+
+- **Computed** (§3): `camAt` over the keyframes. Log-space zoom and velocity blur work. Remotion Studio cannot edit the camera.
+- **GSAP** (§3b): `useGsapTimeline()` from `@remotion/gsap` rejects `onUpdate` and tweens of plain objects, so the `applyCamera` callback does not port. Tween CSS custom properties on the world element and compose the transform in CSS (`exp()` keeps the zoom in log space).
+- **Studio-editable** (§3c): `interpolate(frame, …)` keyframes on the world's `transformOrigin`, `translate` and `scale`. The moves can be dragged in Studio, at the cost of linear zoom and no velocity blur.
 
 **Verify — freeze at stations *and* mid-move:**
 1. At every station frame the content is centred, fully legible and nothing is clipped.
@@ -126,5 +130,5 @@ Standalone scene: **one HTML file**, one master GSAP timeline that animates the 
 
 ## Reference files
 
-- `references/camera-recipes.md` — complete runnable camera rig (GSAP + seek harness) with stations, log-zoom, hops, parallax layers, focus pull and velocity blur; Remotion port with `interpolate` keyframes and `<CameraMotionBlur>`; whip-pan recipe; path-following camera.
+- `references/camera-recipes.md` — complete runnable camera rig (GSAP + seek harness) with stations, log-zoom, hops, parallax layers, focus pull and velocity blur; Remotion ports: computed with `interpolate` keyframes and `<CameraMotionBlur>`, GSAP with CSS custom properties, and a Studio-editable rig; whip-pan recipe; path-following camera.
 - `references/material-systems.md` — paper grain via SVG `feTurbulence`, halftone via CSS gradients and SVG masks, torn edges, cut-out shadows, highlighter swipes, typewriter text, footage grading (CSS filters and `ffmpeg`), and alternative material sets.

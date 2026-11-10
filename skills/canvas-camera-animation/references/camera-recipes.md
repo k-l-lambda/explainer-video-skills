@@ -183,6 +183,77 @@ export const Board: React.FC = () => {
 
 `<CameraMotionBlur>` renders `samples` sub-frames per frame, so render time multiplies. Wrap only the `<Sequence>`s that contain whips, or use the threshold blur from section 2 instead.
 
+This port renders correctly, but Remotion Studio cannot edit it: interpolating over `frame / fps` and over arrays mapped from `K` reads as computed, and so does `Easing.inOut(Easing.cubic)`. Section 3c is the editable variant.
+
+### 3b. A GSAP camera in Remotion
+
+If the camera is written as GSAP tweens, port it with `useGsapTimeline()` from `@remotion/gsap`. The hook rejects `onUpdate` and tweens of plain objects, so a `cam` object applied in a callback does not port. Tween CSS custom properties on the world element instead and let CSS compose the transform. CSS `exp()` (Chrome 120+) keeps the zoom in log space:
+
+```tsx
+import {AbsoluteFill, useVideoConfig} from "remotion";
+import {useGsapTimeline} from "@remotion/gsap";
+
+export const Board: React.FC = () => {
+  const {width, height} = useVideoConfig();
+  const scope = useGsapTimeline<HTMLDivElement>(({timeline, selector}) => {
+    const world = selector(".world");
+    timeline.set(world, {"--x": 0, "--y": 0, "--lz": 0})                                   // lz = ln(zoom)
+      .to(world, {"--x": 1400, duration: 1.2, ease: "power2.inOut"}, 1.0)                  // pan to S2
+      .to(world, {"--x": 1630, "--y": 120, "--lz": Math.log(3.2), duration: 1, ease: "power2.inOut"}, 2.7);
+  });
+  return (
+    <AbsoluteFill ref={scope} style={{overflow: "hidden"}}>
+      <div className="world" style={{position: "absolute", left: 0, top: 0, transformOrigin: "0 0",
+        transform: `translate(${width / 2}px, ${height / 2}px) scale(exp(var(--lz))) translate(calc(-1px * var(--x)), calc(-1px * var(--y)))`}}>
+        {/* stations in world px */}
+      </div>
+    </AbsoluteFill>
+  );
+};
+```
+
+Use the composition's `width`/`height`, not `vw`/`vh`. Parallax layers can read the same variables with their own factor, e.g. `calc(-1px * var(--x) * 0.6)`. Velocity blur has no tween equivalent: it needs the camera at two times, so a film with whips keeps the `camAt(t)` form above. Tested on Remotion 4.0.542 with gsap 3.13.0: a pan and a 3× log-zoom push-in rendered as intended, and the same frames rendered twice in different orders were byte-identical.
+
+### 3c. A camera Remotion Studio can edit
+
+Studio edits a prop only when it is an `interpolate()` over `frame` itself, with literal arrays and a linear or `Easing.bezier(...)` easing (section 1's easeInOutCubic is close to `Easing.bezier(.65, 0, .35, 1)`, not identical). So write one segment per move, with the world's `transformOrigin` as the point the camera looks at, `translate` moving that point to the frame's centre, and `scale` as the zoom about it:
+
+```tsx
+import {AbsoluteFill, Easing, Interactive, interpolate, useCurrentFrame} from "remotion";
+
+export const Board: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{overflow: "hidden"}}>
+      <Interactive.Div name="World" style={{
+        position: "absolute", left: 0, top: 0,
+        // look-at point
+        transformOrigin: interpolate(frame, [30, 66], ["0px 0px", "1400px 0px"],
+          {easing: Easing.bezier(.65, 0, .35, 1), extrapolateLeft: "clamp", extrapolateRight: "clamp"}),
+        // centre − look-at
+        translate: interpolate(frame, [30, 66], ["960px 540px", "-440px 540px"],
+          {easing: Easing.bezier(.65, 0, .35, 1), extrapolateLeft: "clamp", extrapolateRight: "clamp"}),
+        // zoom about it
+        scale: interpolate(frame, [81, 111], [1, 3.2],
+          {easing: Easing.bezier(.65, 0, .35, 1), extrapolateLeft: "clamp", extrapolateRight: "clamp"}),
+      }}>
+        {/* stations in world px */}
+      </Interactive.Div>
+    </AbsoluteFill>
+  );
+};
+```
+
+(For a 1920×1080 frame.) Write the options object out in every call: a shared `const io = {…}` passed to `interpolate()` makes the prop read as computed. All three props then show as keyframes on the World row, and dragging a keyframe moves the move. Tested at 640×360: Studio's analysis reported all three as keyframed, and the target stayed on the frame's centre through the pan and a 3× push-in.
+
+What this costs:
+
+- **Linear zoom.** Studio cannot keyframe `exp()`, so the zoom is linear in scale and seems to speed up as it closes in. Keep pushes short (≤ 3×), or split a long one into two segments.
+- **Coupled keyframes.** `translate` must stay `centre − transformOrigin` at every keyframe. Moving one in Studio without the other moves the framing.
+- **No velocity blur** and no parallax factor: use `<CameraMotionBlur>` on the whip sequences, and keep parallax layers on the computed form if they matter.
+
+Use 3c when the camera will be tuned by hand after the narration is recorded; otherwise keep the computed port above.
+
 ## 4. Whip-pan recipe
 
 - Out → travel → in: drop zoom 10–20% for the whip, restore on landing.

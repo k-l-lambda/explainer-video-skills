@@ -86,7 +86,7 @@ Stagger with small holds for a natural cadence; long primary strokes slower than
 
 ## 4. GSAP variants
 
-`DrawSVGPlugin` (free as of GSAP 3.12) draws a stroke from a 0%→100% range and pairs with one master timeline:
+`DrawSVGPlugin` (free and in the public `gsap` npm package as of GSAP 3.13; the 3.12.5 package does not contain it) draws a stroke from a 0%→100% range and pairs with one master timeline:
 
 ```js
 import gsap from "gsap";
@@ -181,7 +181,9 @@ Pick one wipe direction for the whole piece so transitions feel intentional.
 
 ## 8. Remotion port (frame-driven export)
 
-Drive both `strokeDashoffset` and the hand transform from `useCurrentFrame()` so the render is deterministic — no timers, no rAF.
+If the board is already a GSAP master timeline (section 4), port it as is with `useGsapTimeline()` from `@remotion/gsap`: register `DrawSVGPlugin` and `MotionPathPlugin` once at module scope, build the same `drawSVG` and `motionPath` tweens on the hook's `timeline` through its `selector()`, and attach the returned ref to the board. A `drawSVG` stroke with a `motionPath` follower rendered byte-identical stills across repeated, reordered renders (Remotion 4.0.542, gsap 3.13.0). Porting rules: **diagram-animation**, "Port the master timeline into Remotion".
+
+Otherwise, drive both `strokeDashoffset` and the hand transform from `useCurrentFrame()` so the render is deterministic — no timers, no rAF.
 
 ```jsx
 import { useCurrentFrame, useVideoConfig, interpolate, staticFile, Img } from "remotion";

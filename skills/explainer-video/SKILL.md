@@ -16,6 +16,8 @@ Turn one message into a paced, narrated 30–90s short. Run the full pipeline: s
 
 Longer than ~5 minutes or split into chapters? Use **longform-explainer** for the architecture and this skill's pipeline inside each chapter. Matching an existing film's style? Start with **reference-video-analysis**.
 
+This skill decides the story, pacing and pipeline. Remotion's own agent skills (`npx remotion skills add`, e.g. `/remotion-docs`, `/remotion-markup`) know Remotion's current APIs. Both may claim a request to "make a video": use this one for the film and those for API questions, rather than letting both drive the build.
+
 ## Story structure (decide this first)
 
 An explainer is an argument, not a feature tour. Before any pipeline step, lock the narrative so every later choice serves it.
@@ -126,7 +128,12 @@ Managing releases by hand is slow.
 Shipfast automates the whole pipeline.
 ```
 
-In Remotion, drive captions from the same timing array used for scene cuts so they never drift.
+In Remotion, drive captions from the same timing array used for scene cuts so they never drift. That holds while the timings are estimates. Once the narration is recorded, the audio is the source of truth:
+
+1. Transcribe it to word-timed captions (`scripts/transcribe-captions.py`).
+2. Set each scene's length to its audio and write the captions in as literals (`scripts/sync-scene.mjs`).
+
+The cut can then be tuned by hand in Remotion Studio. See `references/studio-editable.md`.
 
 ## Style-system consistency
 
@@ -152,7 +159,7 @@ The assembled explainer is a Remotion composition — frame-deterministic, so an
 **Output contract:**
 - A Remotion project with the composition registered (`<Composition>` + zod `schema` + `defaultProps`), all motion frame-driven (no timers / `Date.now()` / `Math.random()`).
 - Deliverable = the rendered `out/*.mp4` (plus the project, so VO/script/data can be re-rendered).
-- Narration via `<Audio src={staticFile()}>`; VO/scene timing baked into props (no realtime audio at render). Captions driven from that same timing array so they never drift.
+- Narration via `<Audio src={staticFile()}>`; VO/scene timing baked into props (no realtime audio at render). Captions driven from that same timing array so they never drift, or, for a cut to be tuned in Remotion Studio, literal durations and captions from the recorded audio (`references/studio-editable.md`).
 - Duration data-dependent? compute it in `calculateMetadata`, not by hand.
 
 **Verify loop — render stills → inspect → encode.** Render single frames first (cheap, no encode), inspect them, encode only once the frames are right.
@@ -172,6 +179,11 @@ npx remotion render Explainer out/explainer.mp4 --props='{...}'
 
 - `npx remotion compositions` reads `durationInFrames`/`fps` to pick the end frame and per-scene hold frames.
 - **README demo GIF for free**: `npx remotion render Explainer out/demo.gif --codec=gif`.
+- **Hand-tuning pass (optional)**:
+  - `scripts/studio-check.mjs src/Explainer.tsx` lists which props Remotion Studio can edit.
+  - `npx remotion studio` edits them in place, and the edits are written back to the code.
+  - Re-render stills after tuning. Layout rules: `references/studio-editable.md`.
+- **Handing over to an editor**: Remotion's `remotion-opentimeline` skill exports an OpenTimelineIO file for DaVinci Resolve or Premiere, with media as native clips and animation pre-rendered (`references/studio-editable.md`, last section).
 
 **Before you finish:**
 1. `npx remotion still` renders cleanly at frame 0, a frame inside each scene's hold, and last — no errors, no missing assets/fonts.
@@ -183,3 +195,4 @@ npx remotion render Explainer out/explainer.mp4 --props='{...}'
 ## Reference files
 
 - `references/script-to-screen-workflow.md` — full pipeline detail: the problem→solution→how→payoff script formula with a worked example and word budget, VO timing tables, a fill-in storyboard template with timecodes, a per-scene build checklist, caption authoring guidance (VTT/SRT), and a style-system spec sheet for cross-scene consistency.
+- `references/studio-editable.md` — writing a composition Remotion Studio can edit: what its static analysis reads (measured), the computed-start trap, a tunable film layout, the recorded-narration → captions → literal durations loop, and the OpenTimelineIO handoff.
