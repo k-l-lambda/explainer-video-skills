@@ -33,6 +33,8 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 | [visual-metaphor](./skills/visual-metaphor) | Turn abstract ideas into props that animate a relation — metaphor cards, idiom-to-prop, motif escalation, honest "illustrative" labels. |
 | [canvas-camera-animation](./skills/canvas-camera-animation) | One continuous 2D board, travelled by a virtual camera — push/pull/pan/whip as meaning, parallax, fake DOF, motion blur, paper-collage materials. |
 | [reference-video-analysis](./skills/reference-video-analysis) | Learn from an existing film without copying it — measure cuts, speech rate and loudness, look where the numbers point, write technique cards. |
+| [tts](./skills/tts) | Narration in a cloned voice, locally (Qwen3-TTS Base): build a voice-clone prompt from a reference clip and its transcript, then synthesize each scene's lines. |
+| [3d-model](./skills/3d-model) | 3D assets for a Three.js scene from a reference image: generated photos → TRELLIS meshes or MoGe-2 reliefs → simplified, materialised and packed glTF. |
 
 ## When it activates
 
@@ -67,6 +69,8 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 - visual-metaphor
 - canvas-camera-animation
 - reference-video-analysis
+- tts
+- 3d-model
 
 ## Topics
 

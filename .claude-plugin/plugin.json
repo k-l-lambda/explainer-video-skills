@@ -22,6 +22,10 @@
     "visual-metaphor",
     "canvas-camera-animation",
     "reference-video-analysis",
+    "tts",
+    "voice-clone",
+    "3d-model",
+    "remotion",
     "claude-skill"
   ]
 }
