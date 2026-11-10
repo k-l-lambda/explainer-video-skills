@@ -18,6 +18,13 @@ Longer than ~5 minutes or split into chapters? Use **longform-explainer** for th
 
 This skill decides the story, pacing and pipeline. Remotion's own agent skills (`npx remotion skills add`, e.g. `/remotion-docs`, `/remotion-markup`) know Remotion's current APIs. Both may claim a request to "make a video": use this one for the film and those for API questions, rather than letting both drive the build.
 
+Assets for the scenes come from this pack's generator skills:
+
+- **create-image**: stills, covers and props;
+- **create-video**: generated clips and b-roll;
+- **tts**: the narration;
+- **3d-model**: meshes for a 3D shot.
+
 ## Story structure (decide this first)
 
 An explainer is an argument, not a feature tour. Before any pipeline step, lock the narrative so every later choice serves it.

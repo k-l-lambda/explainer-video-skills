@@ -26,6 +26,8 @@
     "voice-clone",
     "3d-model",
     "remotion",
+    "image-generation",
+    "video-generation",
     "claude-skill"
   ]
 }

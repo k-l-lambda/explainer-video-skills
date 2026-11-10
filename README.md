@@ -35,6 +35,8 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 | [reference-video-analysis](./skills/reference-video-analysis) | Learn from an existing film without copying it — measure cuts, speech rate and loudness, look where the numbers point, write technique cards. |
 | [tts](./skills/tts) | Narration in a cloned voice, locally (Qwen3-TTS Base): build a voice-clone prompt from a reference clip and its transcript, then synthesize each scene's lines. |
 | [3d-model](./skills/3d-model) | 3D assets for a Three.js scene from a reference image: generated photos → TRELLIS meshes or MoGe-2 reliefs → simplified, materialised and packed glTF. |
+| [create-image](./skills/create-image) | Generate or edit stills with gpt-image-2 (covers, props, explainer frames): prompts in files, edits that keep a character consistent, colour drift, and checks by measurement. |
+| [create-video](./skills/create-video) | Generate clips with Dreamina Seedance (asynchronous, cannot be cancelled): validated parameters, first frames, timed shot-list prompts, and per-frame checks. |
 
 ## When it activates
 
@@ -71,6 +73,8 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 - reference-video-analysis
 - tts
 - 3d-model
+- create-image
+- create-video
 
 ## Topics
 
