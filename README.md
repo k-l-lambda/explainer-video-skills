@@ -37,6 +37,7 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 | [3d-model](./skills/3d-model) | 3D assets for a Three.js scene from a reference image: generated photos → TRELLIS meshes or MoGe-2 reliefs → simplified, materialised and packed glTF. |
 | [create-image](./skills/create-image) | Generate or edit stills with gpt-image-2 (covers, props, explainer frames): prompts in files, edits that keep a character consistent, colour drift, and checks by measurement. |
 | [create-video](./skills/create-video) | Generate clips with Dreamina Seedance (asynchronous, cannot be cancelled): validated parameters, first frames, timed shot-list prompts, and per-frame checks. |
+| [create-audio](./skills/create-audio) | Sound effects with Stable Audio 3 small-sfx, locally: specs with prompts, several takes per sound, ranking by CLAP prompt match and signal checks, and placing them against the narration. |
 
 ## When it activates
 
@@ -75,6 +76,7 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 - 3d-model
 - create-image
 - create-video
+- create-audio
 
 ## Topics
 

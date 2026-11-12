@@ -28,6 +28,7 @@
     "remotion",
     "image-generation",
     "video-generation",
+    "sound-effects",
     "claude-skill"
   ]
 }

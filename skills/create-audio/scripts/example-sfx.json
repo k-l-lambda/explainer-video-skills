@@ -1,0 +1,14 @@
+[
+ {"id": "whip-crack", "dur": 1.5, "type": "oneshot",
+  "prompt": "A single sharp leather whip crack, close and dry, cartoon comedy timing, short tail, no music"},
+ {"id": "done-ding", "dur": 1.0, "type": "oneshot",
+  "prompt": "A single bright soft notification ding, clean glassy bell, short decay, friendly, no music"},
+ {"id": "record-scratch", "dur": 1.5, "type": "oneshot", "noisy_ok": true,
+  "prompt": "A vinyl record scratch that stops the music abruptly, comedic, dry, close"},
+ {"id": "party-murmur", "dur": 10.0, "type": "texture",
+  "prompt": "Indoor cocktail party crowd murmur, many people chatting softly, glasses clinking, warm room, no music, no distinct words"},
+ {"id": "ui-click", "dur": 0.4, "type": "oneshot",
+  "prompt": "A single soft modern UI mouse click, subtle, clean, very short, no reverb"},
+ {"id": "parchment-unroll", "dur": 2.0, "type": "oneshot",
+  "prompt": "An old parchment map being unrolled on a wooden table, dry paper rustle, close"}
+]
