@@ -29,6 +29,8 @@
     "image-generation",
     "video-generation",
     "sound-effects",
+    "music-generation",
+    "background-music",
     "claude-skill"
   ]
 }
