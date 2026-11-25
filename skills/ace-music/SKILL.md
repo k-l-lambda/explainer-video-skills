@@ -88,12 +88,20 @@ skipped, so a stopped batch resumes.
   no drums, no sudden hits, slow even dynamics" in `caption_suffix`, applied to every cue.
 - **Length**: ask for the chapter's length plus ~15 s and trim; the model often ends early and
   leaves near-silence (see "Check the result").
-- **Choosing a take**: run `analyze.py`, drop takes with drums (broadband vertical lines), hard
+- **Choosing a take**: `scripts/rank_beds.py` sorts each chapter's takes by the checks below and
+  writes `bgm.json`; run `analyze.py`, drop takes with drums (broadband vertical lines), hard
   breaks or early endings, then listen to the rest over the narration, not alone.
-- **Mixing**: the editor, not the model, sets the level. Start around -22 dB under a voice mastered
-  to -16 LUFS, duck a further ~6 dB while a sentence is spoken (300 ms ramps), fade in over ~1.5 s
-  and crossfade ~2.5 s between chapters. Record the chosen take and gain per chapter in a small
-  JSON (e.g. `bgm.json`) that the video project reads.
+- **Mixing**: the editor, not the model, sets the level, and per take, by measurement. Takes come
+  out at very different loudness (-13.5 to -18.5 LUFS in one batch of nine), so a single fixed gain
+  is wrong. Measure each chosen take (`ffmpeg -i take.wav -af loudnorm=print_format=json -f null -`,
+  `input_i`) and set its gain to land ~14 dB under the narration's integrated loudness (voice
+  -18 LUFS -> bed -32 LUFS: gain = -32 - take LUFS). Duck a further ~6 dB while a sentence is
+  spoken (300 ms ramps), fade in over ~1.5 s and crossfade ~2.5 s between chapters. A flat -22 dB on
+  a -16 LUFS take leaves the bed near -38/-44 LUFS: inaudible on a phone speaker.
+- Record the chosen take, its LUFS and the gain per chapter in a small JSON (e.g. `bgm.json`) that
+  the video project reads. A crude ranking before listening: sound must last the chapter, no
+  near-silent gaps (>30 dB below the median), few broadband transients above 4 kHz (drums), few
+  >9 dB jumps between 1 s windows.
 
 ## Writing the caption
 
