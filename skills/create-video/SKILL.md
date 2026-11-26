@@ -5,6 +5,8 @@ description: Generate video clips with the Dreamina Seedance endpoint via the bu
 
 # Generating video
 
+> Machine-specific gateway notes (other backends behind the same gateway, measured waits, run log) live in `doc.local.md` next to this file when it exists; it is not committed.
+
 Asynchronous, in two calls:
 
 ```
@@ -75,6 +77,13 @@ uploaded anywhere. Two things change when you do:
   3-4 per channel from the source image. A clip generated *without* a first frame
   measures 54-63 against its intended opening still, so the two cases are far
   apart and easy to tell apart in a check.
+
+**A last frame as well**: add a third `content` part and give both images a `role` —
+`"role": "first_frame"` and `"role": "last_frame"`. The model then joins the two frames in one move
+(measured: a 5 s clip landed within ~13/255 mean of the requested last frame). **With a last frame,
+a corrupt `image_url` is no longer refused for free**: such a request was accepted and billed. Probe
+the body shape with an out-of-range value of a field the service checks first, never with a broken
+image.
 
 **`duration: -1` is not a free probe.** It is documented as valid and behaves as
 valid: it starts a real billed generation. An out-of-range value cannot be used to
