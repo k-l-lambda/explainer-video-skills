@@ -83,6 +83,27 @@ rather than re-rolling the prompt and hoping.
 It does **not** solve video start frames; that is a property of the video API,
 not this one.
 
+## A consistent set of frames (storyboards, title sequences)
+
+Learned making 13 first frames for an 11-second title sequence in one engraving style:
+
+- **One style block, appended verbatim to every prompt** (technique, paper/material, palette, light,
+  composition, and the absolute no-text clause). With that alone, independent generations came back as
+  one set; references were only needed for repairs.
+- **No text in generated frames.** Say so absolutely ("no letters, numbers, formulas, captions…; any
+  writing is illegible scribble") and add titles later in the edit. Zoom in on every frame to check.
+- **Living people**: no faces. Use silhouettes, hands, or symbols of their work; dated figures can be
+  drawn from public-domain portraits.
+- **Ask for 2 variants of anything new** (`--n 2`) and pick; it is cheaper than iterating one at a time.
+- **Repairs by edit, not re-roll**: change one element and keep the rest (`--edit` the chosen frame; add a
+  second image as a concept reference, saying it is "only for the shape", and forbid copying its labels).
+- **Plates for exact overlays**: when an element must be mathematically exact or animated (a curve drawn
+  over time), edit the frame to **remove** that element and keep everything else, then draw the exact
+  element in code at the plate's anchor point (find it by measuring the image). Match the generated
+  element's colour and glow; a slight displacement noise makes a vector stroke read as engraved.
+- **Colour-family masks**: if one accent colour carries meaning (gold light), extract it by hue,
+  saturation and brightness into an alpha layer; the edit can then pulse just those elements on the beat.
+
 ## What this endpoint cannot do
 
 - **No transparent background.** `background` accepts only `opaque` and `auto`;

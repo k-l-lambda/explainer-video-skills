@@ -65,7 +65,26 @@ Synthesize one file per scene (or per sentence, then concatenate), named after t
 1. **Captions**: `scripts/transcribe-captions.py` (repo root) turns each file into word-timed captions.
 2. **Scene lengths**: `scripts/sync-scene.mjs` sets each Remotion scene's length to its audio and writes the captions in.
 
-See **explainer-video** `references/studio-editable.md`. Keep the narration script's text as the source of truth for caption wording: compare it with the transcript and fix homophones.
+See **explainer-video** `references/studio-editable.md`. Keep the narration script's text as the source of truth for caption wording: compare it with the transcript and fix homophones. Use the transcript only for word timing.
+
+## Readings, retakes and choosing a take
+
+Learned voicing a 20-minute Chinese explainer, one file per sentence:
+
+- **Fix readings in the text you synthesize, not in the script.** Keep one substitution table applied when
+  the script is turned into TTS lines, matched on **word groups** so the context decides: polyphones
+  (数 as the verb *shǔ* in "数点", "数的正是" but *shù* in "函数"; 重数 *chóng*; the verb 量 *liáng*;
+  奇数 *jī*), names (transliterate foreign names the way the script wants them read), Greek letters
+  (θ → "theta" with no following space, so no pause), and glosses that are caption-only (strip them).
+  Captions keep the script's wording.
+- **Re-record one line without moving the film**: synthesize 2–3 seeds, keep the ones the ASR check
+  accepts, then make the chosen take exactly the old take's duration (pad trailing silence, or trim
+  leading/trailing silence). If it cannot fit without cutting speech, try another seed. Keep the old take
+  and log each retake (line, seed, reason).
+- **Choosing among takes by measurement**: ASR error rate first; then voice cosine; then delivery. For a
+  calm, neutral passage pick the take with the smallest pitch (F0) spread; to get stress on one word,
+  rank takes by that word's loudness/pitch relative to its neighbours. Listen to the shortlist only.
+- **Long pauses after symbols** ("θ …") can be trimmed in the audio rather than re-synthesized.
 
 ## Using the API directly
 

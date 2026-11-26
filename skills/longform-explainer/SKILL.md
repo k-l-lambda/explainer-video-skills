@@ -52,7 +52,7 @@ The cold open runs **before** any title or host intro. A dependable beat order:
 4. **Escalate** with one insider line or scene that deepens the mystery.
 5. **Title card** that states the question or a provocative claim. The host/mascot appears only now.
 
-Cut rhythm is fastest here (a measured case: ASL ≈ 4s in the first chapter vs 10s for the film, with whip-pan bursts on top). A "TV-series" title sequence is optional: if you add one, keep it 5–15s, built from the film's own motifs (props, material, type) so the ending can reuse it. It should preview the conflict, never the answer. Don't borrow a show's logo, music or sequence.
+Cut rhythm is fastest here (a measured case: ASL ≈ 4s in the first chapter vs 10s for the film, with whip-pan bursts on top). A "TV-series" title sequence is optional: if you add one, keep it 5–15s, built from the film's own motifs (props, material, type) so the ending can reuse it. It should preview the conflict, never the answer. Don't borrow a show's logo, music or sequence. How to build one (music first, a cut on every accent, style lock across generated frames, still vs clip vs code per shot): `references/title-sequence.md`.
 
 ## Chapter bridges
 
@@ -136,6 +136,8 @@ scripts/video-sheet.sh out/episode.mp4 sheet-ch05.jpg 1260 2           # eyeball
 scripts/probe-mp4.sh out/episode.mp4 1920x1080 30
 ```
 
+Production checks that bite on long films (reserved zones and overlaps, one-line captions, joining shots, re-timing after edits) are in **explainer-video** `references/production-qa.md`; long renders, multi-machine chunks and reusing a render after an edit are in **remotion-render**.
+
 **Before you finish:**
 1. Pacing numbers sit in the target bands, or the deviation is intentional and noted.
 2. Contact sheet of every chapter boundary shows the bridge (question card, callback, zoom) on screen.
@@ -144,4 +146,5 @@ scripts/probe-mp4.sh out/episode.mp4 1920x1080 30
 
 ## Reference files
 
+- `references/title-sequence.md` — a TV-style title sequence end to end: placement after the cold-open question, picking nodes, music first and cutting on its accents, one style across generated frames, still/clip/code per shot, the final pull-back and title, fitting it into the timeline.
 - `references/chapter-architecture.md` — beat sheet with runtime shares, chapter-card and plant/payoff templates, evidence ledger format, bridge library, and a worked breakdown of a measured 35-minute, 18-chapter essay (structure and numbers only).

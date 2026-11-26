@@ -40,6 +40,7 @@ it looks like a routing problem when the path is right. The model id is found in
 - `composition_plan` — instead of `prompt`: a plan from `/music/plan` (or from a `/detailed`
   response), edited. The durations are honoured exactly: two chunks set to 4000 + 6000 ms gave a
   10.03 s file.
+- **Each chunk is at least 3000 ms** (HTTP 422 `Input should be greater than or equal to 3000`, not billed). A 2 s "rise" has to be 3 s or merged into a neighbour.
 - `force_instrumental: true` — no vocals. **Only with `prompt`**: with `composition_plan` it is HTTP 422
   "`force_instrumental` can only be used with `prompt`." — put `vocals` in the chunks'
   `negative_styles` instead (`genmusic.py` drops the flag with a warning).
@@ -98,6 +99,21 @@ Prompt-only requests (no plan editing), `force_instrumental`, 125 s and 175 s:
   break"). Check for gaps before laying a take under narration.
 - **Loud**: −13.3 and −12.0 LUFS integrated (ACE-Step takes were −17 to −20). Set the bed gain from
   the measured loudness, not a fixed dB value.
+
+## Short cues (a title sting, a hit on a cut)
+
+For a cue the picture is cut to (e.g. an 11 s title sequence):
+
+1. Write a plan of 3 chunks — build (5 s), rise (3 s), hit and ring-out (3 s+) — with the **tempo and key
+   in every chunk**, and the key matching the bed it hands over to. "Starts immediately" and "no fade in"
+   in the first chunk; "no drums after the hit" in the last.
+2. Compose one sample per style direction (strings ostinato, a ticking irregular pulse, organ and wordless
+   choir, synth arpeggio + organ…); 4 × 11 s is cheap. Compare at equal loudness (`loudnorm` to −16 LUFS).
+3. **Measure the accents** of the chosen take (onsets on a 10 ms energy envelope) and cut the picture to
+   them; the plan's tempo is usually honoured closely enough (a 120 BPM plan gave accents every 0.50 s and
+   the hit at 8.00 s).
+4. The ring-out of short plans is short (fades by ~9.5–10.5 s of 11); make the last chunk longer if a
+   title has to hold on it.
 
 ## Cost discipline
 

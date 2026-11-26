@@ -98,6 +98,10 @@ skipped, so a stopped batch resumes.
   -18 LUFS -> bed -32 LUFS: gain = -32 - take LUFS). Duck a further ~6 dB while a sentence is
   spoken (300 ms ramps), fade in over ~1.5 s and crossfade ~2.5 s between chapters. A flat -22 dB on
   a -16 LUFS take leaves the bed near -38/-44 LUFS: inaudible on a phone speaker.
+- **Inserting a cue** (a title sting) inside a chapter: pause the chapter bed rather than mixing two
+  beds — fade it out (~0.6 s) to the cue, play the cue without ducking (no voice), then resume the bed
+  where it stopped with a short fade-in (~0.3 s). Set the cue a few dB above the bed so it registers as
+  an event.
 - Record the chosen take, its LUFS and the gain per chapter in a small JSON (e.g. `bgm.json`) that
   the video project reads. A crude ranking before listening: sound must last the chapter, no
   near-silent gaps (>30 dB below the median), few broadband transients above 4 kHz (drums), few

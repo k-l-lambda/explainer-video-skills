@@ -119,7 +119,7 @@ function countUp(el, to, dur=1200){ const t0=performance.now(); (function f(n){
   el.textContent=Math.round(to*e).toLocaleString(); if(k<1)requestAnimationFrame(f);})(t0); }
 ```
 
-Render the assembled piece with Remotion (data-driven, deterministic) or After Effects.
+Render the assembled piece with Remotion (data-driven, deterministic) or After Effects. For long films, parallel or multi-machine renders and reusing a previous render, see **remotion-render**.
 
 ## Caption sync
 
@@ -142,11 +142,15 @@ In Remotion, drive captions from the same timing array used for scene cuts so th
 
 The cut can then be tuned by hand in Remotion Studio. See `references/studio-editable.md`.
 
+For phone viewing and CJK text prefer **one line** split at punctuation, timed by word timestamps but worded from the script (ASR mishears homophones). Captions get a reserved band that scene content never enters: `references/production-qa.md` §1–2.
+
 ## Style-system consistency
 
 Lock one type scale, one color grammar (color = meaning, never reassigned), and one easing curve before building scene 2. Reuse the same enter/exit transitions across scenes so the piece feels like one object, not a montage of experiments. Visuals must illustrate the VO line currently spoken — show, don't decorate.
 
 For continuity across scenes, lay them out as stations on one board and let camera moves be the transitions. **canvas-camera-animation** covers camera grammar and tactile material systems (paper, blueprint, chalk).
+
+When scenes are separate shots, decide each **join as a pair**: hard cut when nothing changes (and verify it is pixel-identical), full-frame eased pushes otherwise, the outgoing shot still playing during the overlap and clips holding their last frame, shared backgrounds outside the shots. `references/production-qa.md` §3.
 
 ## Output checklist
 
@@ -196,10 +200,12 @@ npx remotion render Explainer out/explainer.mp4 --props='{...}'
 1. `npx remotion still` renders cleanly at frame 0, a frame inside each scene's hold, and last — no errors, no missing assets/fonts.
 2. At every sampled scene frame, the caption and the spoken VO line match the visual on screen (no drift).
 3. Captions are inside safe areas, ≤2 lines, readable; text is exact and not clipped.
-4. Frame-driven only — no `Date.now()` / `Math.random()` / timers; the **shipped** props render correctly (not just `defaultProps`).
-5. Full MP4 encoded and plays with narration; (optional) GIF rendered for the README.
+4. Contact sheets of key frames per shot show no overlaps between labels, and nothing in the caption band (`references/production-qa.md` §1). After any re-timing, the checklist in §4 has been run.
+5. Frame-driven only — no `Date.now()` / `Math.random()` / timers; the **shipped** props render correctly (not just `defaultProps`).
+6. Full MP4 encoded and plays with narration; (optional) GIF rendered for the README.
 
 ## Reference files
 
 - `references/script-to-screen-workflow.md` — full pipeline detail: the problem→solution→how→payoff script formula with a worked example and word budget, VO timing tables, a fill-in storyboard template with timecodes, a per-scene build checklist, caption authoring guidance (VTT/SRT), and a style-system spec sheet for cross-scene consistency.
+- `references/production-qa.md` — reserved zones and overlap checks, one-line captions, joining shots (pair transitions, running tails, invisible hard cuts), a timeline driven by the recorded narration with a re-timing checklist, and previews.
 - `references/studio-editable.md` — writing a composition Remotion Studio can edit: what its static analysis reads (measured), the computed-start trap, a tunable film layout, the recorded-narration → captions → literal durations loop, and the OpenTimelineIO handoff.

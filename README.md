@@ -40,6 +40,7 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 | [create-audio](./skills/create-audio) | Sound effects with Stable Audio 3 small-sfx, locally: specs with prompts, several takes per sound, ranking by CLAP prompt match and signal checks, and placing them against the narration. |
 | [ace-music](./skills/ace-music) | Music and per-chapter background beds with ACE-Step 1.5, locally: captions that steer instruments and harmony, several seeds per cue in one batch, objective checks (tempo, key, spectrogram), and mixing beds under narration. |
 | [api-music](./skills/api-music) | Music through a hosted API with the ElevenLabs music contract: an editable composition plan (sections, durations, style tags), audio from a prompt or the plan, multipart detailed responses, PCM output, and what drifts (tempo, key, loudness). |
+| [remotion-render](./skills/remotion-render) | Render long Remotion films fast and correctly: the parallel texture race, software GL vs GPU per scene type, chunked multi-process or multi-machine renders and their scaling cliff, reusing a previous render when only the head changed, and seam/frame-count checks. |
 
 ## When it activates
 
@@ -81,6 +82,7 @@ The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent run
 - create-audio
 - ace-music
 - api-music
+- remotion-render
 
 ## Topics
 

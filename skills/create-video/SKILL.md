@@ -121,6 +121,25 @@ Colour behaves as it does for images: see the `create-image` skill. Hex values
 drift, emphasis moves them without pinning them, and accuracy varies within a
 single render.
 
+## Clip, still or code?
+
+For a fast montage (0.5–1.5 s per shot) most shots do not need a generated clip. A still with an eased
+camera move (pull or push, pan, 2.5D parallax from a depth map) plus beat-synced accents keeps the
+frame's quality exactly, and the cut lands on the beat. Generate clips only where the shot **is** a
+continuous change: a material transforming, travel through space, a large pull-back. Draw anything that
+must be exact (a function's curve) in code over a plate (**create-image**).
+
+## Using what comes back
+
+- **The move may be the opposite of the brief** (asked for a pull-back, got a slow push): reverse the
+  clip (`ffmpeg -vf reverse`) and add the missing scale in the edit.
+- **Small things get substituted**: a text cursor came back as a mouse arrow; a line drawing turned into
+  neon outlines. Generate two takes of each and check details at full size.
+- **Use only the part you need**: start the clip mid-way and speed it up (`playbackRate`) to fit a short
+  shot; clips are 24 fps, the edit can be 30.
+- **A poll that times out is not a failed task**: re-fetch with `--task <id>` instead of creating a new
+  (billed) one.
+
 ## Verify the clip by measuring it
 
 Measure the clip with `ffprobe`, `ffmpeg`, `cv2` and `av`. Even where frames can
